@@ -183,3 +183,10 @@ $(function () {
     });
 
 });
+
+if($('input[name=userLogged]').val() =='admin'){
+    location = 'admin/dashboard.php';
+}
+if($('input[name=userLogged]').val() =='student'){
+    location = 'student/dashboard.php';
+}

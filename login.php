@@ -26,12 +26,8 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9] -->
 
 </head>
-<?php include 'layouts/header.php';
-
-if(isset($_SESSION["islogged"])){
-    $_SESSION['user']=='user'? header('location: user/dashboard.php'):header('location: admin/dashboard.php');
-}
-?>
+<input name="userLogged" value="<?php echo $_SESSION["user"]; ?>" hidden>
+<?php include 'layouts/header.php'; ?>
 <body style="background: darkslategrey">
 
 <div style="width:100%;margin-top: 150px;position:absolute;">

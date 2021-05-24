@@ -8,6 +8,7 @@
     </div>
 </footer>
 <?php if(isset($_SESSION['islogged'])) {
+
     $_SESSION['user']=='student'? include('./../student/modal.php'): (include('./../admin/modal.php'));
     include('./../layouts/scripts.php');
 }?>

@@ -36,6 +36,11 @@
     $pth = isset($_SESSION['islogged'])? '../assets' : 'assets';
 
     $img = empty(isset($_SESSION['image']))? '../assets/img/profile.png' : '../assets/img/profile/'.isset($_SESSION['image']);
+    if(isset($_SESSION['islogged'])){
+
+        $class = $_SESSION['user'] =='student'? 'view-student-profile' : 'view-admin-profile';
+        $id = $_SESSION['user'] =='student'? $_SESSION['studentNo'] : $_SESSION['id'];
+    }
     ?>
     <!-- Header Navigation-->
     <header class="header">
@@ -108,7 +113,7 @@
                             <div class="avatar">
                                 <img src="'.$img.'" alt="..." width="25" class="img-fluid rounded-circle"></div></a>
                         <div aria-labelledby="navbarDropdownMenuLink3" class="dropdown-menu messages">
-                            <a href="#" class="dropdown-item message d-flex align-items-center">
+                            <a id="'.$id.'" href="#" class="dropdown-item message d-flex align-items-center '.$class.'">
                                 <div class="content">   <strong class="d-block">View Profile  <span class="fa fa-eye"></span></strong>
                                 </div>
                             </a>

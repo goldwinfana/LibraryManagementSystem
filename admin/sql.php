@@ -3,6 +3,44 @@ include './../layouts/session.php';
 $init = $pdo->open();
 $return = $_SERVER['HTTP_REFERER'];
 
+if(isset($_POST['user'])) {
+    $name = $_POST['add-name'];
+    $email = $_POST['add-email'];
+    $idNo = $_POST['add-idNo'];
+    $gender = $_POST['add-gender'];
+    $password = $_POST['password'];
+    $studentNo=date('Y').substr($idNo,2,4).substr(rand(),0,2);
+    if($_POST['user'] =='Admin'){
+        $sql = $init->prepare("SELECT * FROM admin WHERE email=:email ");
+        $sql->execute(['email' => $email]);
+
+        if ($sql->rowCount() > 0) {
+            $_SESSION['error'] = 'Email already exits';
+        } else {
+
+            $sql = $init->prepare("INSERT INTO admin(name, email,id_number,gender, password) 
+						VALUES (:name,:email,:id_number,:gender, :password)");
+            $sql->execute(['name'=>$name, 'email'=>$email,'id_number'=>$idNo,'gender'=>$gender, 'password'=>$password]);
+            $_SESSION['success'] = 'Admin added successfully';
+        }
+        header('Location: '.$return);
+    }else{
+        $sql = $init->prepare("SELECT * FROM student WHERE email=:email ");
+        $sql->execute(['email' => $email]);
+
+        if ($sql->rowCount() > 0) {
+            $_SESSION['error'] = 'Email already exits';
+        } else {
+
+            $sql = $init->prepare("INSERT INTO student(studentNo,name, email,id_number,gender, password) 
+						VALUES (:studentNo,:name,:email,:id_number,:gender, :password)");
+            $sql->execute(['studentNo'=>$studentNo,'name'=>$name, 'email'=>$email,'id_number'=>$idNo,'gender'=>$gender, 'password'=>$password]);
+            $_SESSION['success'] = 'Student added successfully';
+        }
+        header('Location: '.$return);
+    }
+}
+
 if(isset($_POST['add-category'])) {
     $category = $_POST['category'];
 
@@ -115,7 +153,7 @@ if(isset($_POST['edit-student'])) {
     $studNo = $_POST['edit-student'];
     $name = $_POST['edit-name'];
     $email = $_POST['edit-email'];
-    $id_number = $_POST['edit-id_number'];
+    $id_number = $_POST['edit-idNo'];
     $gender = $_POST['edit-gender'];
     $password= $_POST['edit-password'];
 
@@ -130,7 +168,7 @@ if(isset($_POST['edit-student'])) {
             $sql = $init->prepare("UPDATE student SET name=:name, email=:email, id_number=:id_number,
                                          gender=:gender,password=:password
                                          WHERE studentNo=:studentNo");
-            $sql->execute(['name'=>$name,'email'=>$email,'id_number'=>$id_number, 'gender'=>$gender, 'password'=>$password,'studentNo'=>$studentNo]);
+            $sql->execute(['name'=>$name,'email'=>$email,'id_number'=>$id_number, 'gender'=>$gender, 'password'=>$password,'studentNo'=>$studNo]);
             $_SESSION['success'] = 'Student updated successfully';
         }catch (Exception $e){
             $_SESSION['error'] = $e->getMessage();
@@ -156,42 +194,48 @@ if(isset($_POST['delete-student'])){
 
 }
 
+//Admins
+if (isset($_POST['getAdmin'])) {
+    $id = $_POST['getAdmin'];
 
+    $sql = $init->prepare("SELECT * FROM admin WHERE id=:id");
+    $sql->execute(['id' => $id]);
+    $results = $sql->fetch();
 
-
-
-
-
-
-if (isset($_POST['user_id'])) {
-    $id = $_POST['user_id'];
-
-    $stmt = $conn->prepare("SELECT * FROM farmer WHERE id=:id");
-    $stmt->execute(['id' => $id]);
-    $row = $stmt->fetch();
-
-    echo json_encode($row);
+    echo json_encode($results);
 }
 
-if (isset($_POST['farmer_id'])) {
-    $id = $_POST['farmer_id'];
+if(isset($_POST['edit-admin'])) {
+    $id = $_POST['edit-admin'];
+    $name = $_POST['edit-admin-name'];
+    $email = $_POST['edit-admin-email'];
+    $id_number = $_POST['edit-admin-idNo'];
+    $gender = $_POST['edit-admin-gender'];
+    $password= $_POST['edit-admin-password'];
 
-    $stmt = $conn->prepare("SELECT * FROM farmer WHERE id=:id");
-    $stmt->execute(['id' => $id]);
-    $row = $stmt->fetch();
+    $sql = $init->prepare("SELECT * FROM admin WHERE id=:id ");
+    $sql->execute(['id' => $id]);
 
-    echo json_encode($row);
+    if ($sql->rowCount() < 0) {
+        $_SESSION['error'] = 'Admin does not exit';
+    } else {
+
+        try{
+            $sql = $init->prepare("UPDATE admin SET name=:name, email=:email, id_number=:id_number,
+                                         gender=:gender,password=:password
+                                         WHERE id=:id");
+            $sql->execute(['name'=>$name,'email'=>$email,'id_number'=>$id_number, 'gender'=>$gender, 'password'=>$password,'id'=>$id]);
+            $_SESSION['success'] = 'Admin updated successfully';
+        }catch (Exception $e){
+            $_SESSION['error'] = $e->getMessage();
+        }
+
+    }
+    header('Location: '.$return);
 }
 
-if (isset($_POST['admin_id'])) {
-    $id = $_POST['admin_id'];
 
-    $stmt = $conn->prepare("SELECT * FROM admin WHERE id=:id");
-    $stmt->execute(['id' => $id]);
-    $row = $stmt->fetch();
 
-    echo json_encode($row);
-}
 
 if (isset($_POST['profile_admin'])) {
     $id = $_SESSION['admin'];

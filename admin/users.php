@@ -45,7 +45,7 @@ if(isset($_SESSION['error'])){
         </div>
 
         <div style="margin:15px">
-            <button class="btn btn-primary aadd-user">Add User</button>
+            <button class="btn btn-primary add-user">Add User</button>
         </div>
 
         <div style="margin:15px">
@@ -62,10 +62,10 @@ if(isset($_SESSION['error'])){
             <div class="container-fluid">
                 <div class="row">
 
-                    <table id="ticket_table" class="table table-bordered students" style="width: 100%;">
+                    <table id="ticket_table" class="table table-bordered" style="width: 100%;">
                         <thead>
                         <tr>
-                            <th>Student Number</th>
+                            <th class="students">Student Number</th>
                             <th>Name</th>
                             <th>E-mail</th>
                             <th>Gender</th>
@@ -73,7 +73,7 @@ if(isset($_SESSION['error'])){
                             <th>Action</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="students">
 
                         <?php
 
@@ -108,21 +108,8 @@ if(isset($_SESSION['error'])){
 
                         </tbody>
 
-                    </table>
 
-                    <table id="ticket_table" class="table table-bordered admins" style="width: 100%;">
-                        <thead>
-                        <tr>
-                            <th class="students">Student Number</th>
-                            <th>Name</th>
-                            <th>E-mail</th>
-                            <th>Gender</th>
-                            <th>ID Number</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
+                        <tbody class="admins">
 
                         <?php
 
@@ -142,7 +129,7 @@ if(isset($_SESSION['error'])){
                                         <td>
                                             <div class="d-flex" >
                                                 <a id="'.$data["id"].'" class="contributions bg-info text-white action_spans" title="View"><i class="fa fa-eye"></i></a>
-                                                <a id="'.$data["id"].'" class="contributions bg-warning text-white action_spans edit-adim" title="Edit"><i class="fa fa-edit"></i></a>
+                                                <a id="'.$data["id"].'" class="contributions bg-warning text-white action_spans edit-admin" title="Edit"><i class="fa fa-edit"></i></a>
                                                 <a id="'.$data["id"].'" class="contributions bg-danger text-white action_spans delete-admin" title="Delete"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>

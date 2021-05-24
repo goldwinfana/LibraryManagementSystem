@@ -64,6 +64,7 @@ if(isset($_POST['login'])){
             if($password == $results['password']){
                 $_SESSION['user'] = 'student';
                 $_SESSION['name'] = $results['name'];
+                $_SESSION['studentNo'] = $results['studentNo'];
                 $_SESSION['id'] = $results['id'];
                 $_SESSION["islogged"] = true;
                 $_SESSION["email"] = $results['email'];

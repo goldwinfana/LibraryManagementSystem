@@ -26,6 +26,7 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9] -->
 
 </head>
+<input name="userLogged" value="<?php echo $_SESSION["user"]; ?>" hidden>
 <?php include 'layouts/header.php'; ?>
 <body style="background: darkslategrey">
 

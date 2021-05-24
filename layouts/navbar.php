@@ -19,14 +19,14 @@
         <?php
         if($_SESSION['user'] == 'admin'){
             echo '
-            <li><a class="update-user-profile"> <i class="fa fa-user-circle"></i>Profile</a></li>
+            <li><a id="'.$_SESSION['id'].'" class="update-user-profile edit-admin"> <i class="fa fa-user-circle"></i>Profile</a></li>
             <li><a href="./../admin/users.php" class="view-students"> <i class="fa fa-users"></i>Users</a></li>
         
        ';}
 
         if($_SESSION['user'] == 'student'){
             echo '
-            <li><a class="update-user-profile"> <i class="fa fa-user-circle"></i>Profile</a></li>
+            <li><a id="'.$_SESSION['studentNo'].'" class="update-user-profile edit-student"> <i class="fa fa-user-circle"></i>Profile</a></li>
             <li><a class="create-shout"> <i class="fa fa-plus-circle"></i>Book Session</a></li>
        ';}
         ?>

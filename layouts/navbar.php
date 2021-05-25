@@ -10,7 +10,7 @@
 <!--{{--        <div class="avatar"><img src="{{asset('ask/img/profile.png')}}" alt="..." class="img-fluid rounded-circle"></div>--}}-->
         <div class="title" style="padding: 20px;">
             <h1 class="h5"><?php if($_SESSION['user']) echo $_SESSION['user'] ?></h1>
-            <p><?php if($_SESSION['name']) echo $_SESSION['name'] ?></p>
+            <p><?php if(isset($_SESSION['name'])) echo $_SESSION['name'] ?></p>
         </div>
     </div>
 <!--     Sidebar Navidation Menus--><span class="heading">Main</span>
@@ -27,10 +27,10 @@
         if($_SESSION['user'] == 'student'){
             echo '
             <li><a id="'.$_SESSION['studentNo'].'" class="update-user-profile edit-student"> <i class="fa fa-user-circle"></i>Profile</a></li>
-            <li><a class="create-shout"> <i class="fa fa-plus-circle"></i>Book Session</a></li>
+            <li><a class="create-shout book-session"> <i class="fa fa-plus-circle"></i>Book Session</a></li>
        ';}
         ?>
-        <li><a href="/logout.php"><i class="fa fa-sign-out"></i> Logout</a></li>
+        <li><a href="../logout.php"><i class="fa fa-sign-out"></i> Logout</a></li>
 
     </ul>
 </nav>

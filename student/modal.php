@@ -42,7 +42,7 @@
                         <label for="edit-name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                         <div class="col-md-6">
-                            <input id="edit-name" type="text" class="form-control is-invalid" name="edit-name" onkeypress="return /[a-z,'']/i.test(event.key)" required autocomplete="false">
+                            <input id="edit-name" type="text" class="form-control is-invalid" name="edit-name" required autocomplete="false">
                         </div>
                         <span class="text-center" role="alert" style="display: block">
                             </span>
@@ -96,4 +96,75 @@
         </div>
     </div>
 </div>
+</div></div>
+
+<div class="modal fade" id="book-session">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <a type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></a>
+            <div class="modal-header">
+                <span>Book Session</span>
+            </div>
+            <div class="modal-body">
+
+
+
+                    <div style="margin:15px">
+
+
+                <?php
+                $init = $pdo->open();
+                $sql = $init->prepare("SELECT * FROM session where studNumber=:studNumber");
+                $sql->execute(['studNumber'=>$_SESSION['studentNo']]);
+                $results = $sql->fetch();
+
+                if($sql->rowCount() > 0){
+                    echo '<p>Time Left: <span class="countDown"></span></p>
+                          <p>Start Time: '.$results['startTime'].'</p>
+                          <p>End Time: <span  class="time-left">'.$results['endTime'].'</span></p>
+                           <p>Duration: <span  class="session-dur">'.$results['duration'].'</span> Hour(s)</p>
+                          <p>Table: '.$results['tblNumber'].'</p>
+                           <form class="form-horizontal" method="POST" action="sql.php" >
+                             <input name="end-book" value="end" hidden>
+                              <button type="submit" class="btn btn-danger btn-flat" name="endBooking"><i class="fa fa-close-o"></i>End Session</button>
+                           </form>';
+                }else{
+                    $sql = $init->prepare("SELECT * FROM desk where status=:status");
+                    $sql->execute(['status'=>'available']);
+                    $results = $sql->fetchAll();
+
+                    if($sql->rowCount() > 0){
+                        echo '
+                        <form class="form-horizontal" method="POST" action="sql.php" enctype="multipart/form-data">
+                              <select class="form-control" style="width: 100%" name="book-hours" required>
+                                    <option value="" selected disabled>Choose hours of study</option>
+                                    <option value="1" >1 hour</option>
+                                    <option value="2" >2 hours</option>
+                                    <option value="3">3 hours</option>
+                                    <option value="4">4 hours</option>
+                                    <option value="5" >5 hours</option>
+                                </select><br/>
+                        <select class="form-control" style="width: 100%" name="book-session" required>
+                        <option value="" selected disabled>Available Slots</option>';
+                        foreach ($results as $data){
+
+                            echo '<option value="'.$data['tblNumber'].'">Table '.$data['tblNumber'].'</option>';
+                        }
+                        echo ' 
+                             </select>
+                          <div class="modal-footer">
+                           <button type="submit" class="btn btn-success btn-flat"><i class="fa fa-save"></i> Confirm</button></div>
+                        </form>';
+                    }else{
+                        echo '<span>There are no slots available for booking</span>';
+                    }
+                }
+
+                $pdo->close();
+                ?>
+                    </div>
+
+
+        </div>
+    </div>
 </div></div>

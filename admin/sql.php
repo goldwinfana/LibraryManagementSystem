@@ -226,6 +226,7 @@ if(isset($_POST['edit-admin'])) {
                                          WHERE id=:id");
             $sql->execute(['name'=>$name,'email'=>$email,'id_number'=>$id_number, 'gender'=>$gender, 'password'=>$password,'id'=>$id]);
             $_SESSION['success'] = 'Admin updated successfully';
+            $id == $_SESSION['id']?$_SESSION['name'] = $name: '';
         }catch (Exception $e){
             $_SESSION['error'] = $e->getMessage();
         }

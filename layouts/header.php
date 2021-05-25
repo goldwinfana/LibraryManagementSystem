@@ -75,7 +75,7 @@
                     <?php
                     if(isset($_SESSION['islogged'])){
 
-                        echo '<div class="list-inline-item dropdown"><a id="navbarDropdownMenuLink1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link messages-toggle"><i class="fa fa-bell"></i><span class="badge dashbg-2">5</span></a>
+                        echo '<div hidden class="list-inline-item dropdown"><a id="navbarDropdownMenuLink1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link messages-toggle"><i class="fa fa-bell"></i><span class="badge dashbg-2">5</span></a>
                                     <div aria-labelledby="navbarDropdownMenuLink1" class="dropdown-menu messages"><a href="#" class="dropdown-item message d-flex align-items-center">
                                             <div class="profile"><img src="img/avatar-3.jpg" alt="..." class="img-fluid">
                                                 <div class="status online"></div>

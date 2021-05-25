@@ -32,7 +32,7 @@ if(isset($_SESSION['error'])){
 <html lang="en">
 <?php include './../layouts/header.php'; ?>
 <body style="display: flex">
-<div style="display:flex;background: #2d3035;">
+<div style="width:100%;display:flex;background: #2d3035;">
     <?php include './../layouts/navbar.php'; ?>
 
 <!--    {{--BODY --}}-->
@@ -51,11 +51,6 @@ if(isset($_SESSION['error'])){
                                 <div class="title">
                                     <div class="icon"><i class="fa fa-list"></i></div><h15>All Books (0)</h15>
                                 </div>
-                                <!--                                {{--                                @if(!empty($tickets))--}}-->
-                                <!--                                {{--                                    <div class="number">{{count($tickets)}}</div>--}}-->
-                                <!--                                {{--                                @else--}}-->
-                                <!--                                {{--                                    <div class="number">{{__('0')}}</div>--}}-->
-                                <!--                                {{--                                @endif--}}-->
 
                             </div>
                             <div class="progress progress-template">
@@ -98,18 +93,13 @@ if(isset($_SESSION['error'])){
                                     <div class="icon">
                                         <i class="fa fa-clock-o active"></i>
                                     </div>
-                                    <h15 class="active">Time Left (0)</h15>
-                                    <!--                                    <span>-->
-                                    <!--                                        <p>Start Time: 15:00</p>-->
-                                    <!--                                        <p>End Booked: 15:00</p>-->
-                                    <!--                                        <p>Duration: 2 Hours</p>-->
-                                    <!--                                    </span>-->
+                                    <h15 class="active">Time Left (<i class="time-bar-count">0</i>)</h15>
 
                                 </div>
                                 <div class="number "></div>
                             </div>
                             <div class="progress progress-template">
-                                <div role="progressbar" style="width: 0%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template"></div>
+                                <div role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template time-bar"></div>
                             </div>
                         </div>
                     </div>
@@ -126,30 +116,38 @@ if(isset($_SESSION['error'])){
 
                     <table id="ticket_table" class="table table-bordered" style="width: 100%;">
                         <thead>
-                        <th>Available Posts</th>
+                        <th>Available Books</th>
                         </thead>
                         <tbody>
 
-                        @if(!empty($posts))
-                        @foreach($posts as $key=>$post)
+                        <?php
+                        $init = $pdo->open();
+                        $sql = $init->prepare("SELECT *,book.id AS bookID FROM book,category where book.categoryID=category.id");
+                        $sql->execute();
+
+                        if($sql->rowCount() > 0){
+                            foreach ($sql as $data){
+
+                                echo '
+
+
                         <tr>
                             <td>
                                 <div class="public-user-block block">
                                     <div class="align-items-center">
                                         <div class="d-flex float-right sec_actions" >
-                                            {{--                                                    <a class="contributions bg-info text-white action_spans" title="{{ _('View')}}"><i class="fa fa-eye"></i></a>--}}
-                                            <a id="{{$post->postID}}" class="contributions bg-warning text-white action_spans edit-post" title="{{ _('Edit')}}"><i class="fa fa-edit"></i></a>
-                                            <a id="{{$post->postID}}" class="contributions bg-danger text-white action_spans delete-post" title="{{ _('Delete')}}"><i class="fa fa-trash"></i></a>
+                                        
+                                        
                                         </div>
 
                                         <div class="d-block align-items-center">
                                             <strong class="d-block">
-                                                <a id="{{$post->postID}}" class="post-title" style="color: cadetblue;" href="#pNo={{$post->postID}}">{{$post->title}} <small class="text-white-50 font-weight-lighter">({{$post->postID}})</small></a>
-                                                <span class="contributions status_show {{$post->status}}">{{$post->status}}</span>
-                                                <a href="#applicants" style="text-decoration: none;color: currentColor;" title="click to view applications" class="contributions status_show">{{__('0')}} applicants</a>
+                                                <a id="'.$data["bookID"].'" class="post-title" style="color: cadetblue;" href="#pNo={{$post->postID}}">'.$data["bookName"].' <small class="text-white-50 font-weight-lighter">('.$data["author"].')</small></a>
+                                                <span class="contributions status_show {{$post->status}}">Shelve Number '.$data["shelveNumber"].'</span>
+                                                <a href="#applicants" style="text-decoration: none;color: currentColor;" title="click to view applications" class="contributions status_show"> R'.$data["price"].'</a>
                                             </strong>
-                                            <span class="d-block padding-top-sm padding-bottom-sm">{{$post->description}}</span>
-                                            <div class="contributions text-danger">Closing Date: {{$post->closeDate}}</div>
+                                            <span class="d-block padding-top-sm padding-bottom-sm">'.$data["categoryName"].'</span>
+                                            <div class="contributions text-danger">Available</div>
                                         </div>
 
                                     </div>
@@ -157,10 +155,41 @@ if(isset($_SESSION['error'])){
 
                             </td>
                         </tr>
-                        @endforeach
-                        @else
-                        <h5>No Posts Available...</h5>
-                        @endif
+
+
+                                ';
+                            }
+
+                        }
+                        $pdo->close();
+                        ?>
+<!---->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <div class="public-user-block block">-->
+<!--                                    <div class="align-items-center">-->
+<!--                                        <div class="d-flex float-right sec_actions" >-->
+<!---->
+<!--                                            <a id="{{$post->postID}}" class="contributions bg-warning text-white action_spans edit-post" title="Edit"><i class="fa fa-edit"></i></a>-->
+<!--                                            <a id="{{$post->postID}}" class="contributions bg-danger text-white action_spans delete-post" title="Delete"><i class="fa fa-trash"></i></a>-->
+<!--                                        </div>-->
+<!---->
+<!--                                        <div class="d-block align-items-center">-->
+<!--                                            <strong class="d-block">-->
+<!--                                                <a id="{{$post->postID}}" class="post-title" style="color: cadetblue;" href="#pNo={{$post->postID}}">{{$post->title}} <small class="text-white-50 font-weight-lighter">({{$post->postID}})</small></a>-->
+<!--                                                <span class="contributions status_show {{$post->status}}">{{$post->status}}</span>-->
+<!--                                                <a href="#applicants" style="text-decoration: none;color: currentColor;" title="click to view applications" class="contributions status_show">{{__('0')}} applicants</a>-->
+<!--                                            </strong>-->
+<!--                                            <span class="d-block padding-top-sm padding-bottom-sm">{{$post->description}}</span>-->
+<!--                                            <div class="contributions text-danger">Closing Date: {{$post->closeDate}}</div>-->
+<!--                                        </div>-->
+<!---->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!---->
+<!--                            </td>-->
+<!--                        </tr>-->
+
 
                         </tbody>
                     </table>

@@ -717,17 +717,10 @@ $(function () {
 
     });
 
-    // $('select[name=user]').on('change', function () {
-    //
-    //     if($('select[name=user]').val() == 'Admins'){
-    //         $('input[name=add-studNumber]').val('');
-    //         $('.user-input').hide();
-    //     }else{
-    //         $('.user-input').show();
-    //     }
-    //
-    // });
+    $('.book-session').on('click', function () {
+        $('#book-session').modal('show');
 
+    });
 
     $('select[name=select-user]').on('change', function () {
 
@@ -754,3 +747,48 @@ $(function () {
 setTimeout(function () {
     $('.message-alert').fadeOut('slow');
 },8000);
+
+function getCount(){
+    var time = $('.time-left').html();
+    var date = new Date();
+    time = time.substr(0,time.length -2);
+    var hrs = time.substr(0,2);
+    hrs = Math.floor(hrs*60);
+    var min = time.substr(3,2);
+    var firstHr = hrs+parseInt(min);
+
+    var hrs2 =new Date().getHours();
+    hrs2 = Math.floor(hrs2*60);
+    var min2 = new Date().getMinutes();
+    var lastHr = hrs2+parseInt(min2);
+
+    var dif = firstHr - lastHr;
+
+    $('.countDown').css('color','#8a8d93').html(dif+' Minutes');
+    $('.time-bar-count').css('color','#8a8d93').html(dif+' Mins');
+    $('.time-bar').attr('width', (dif/parseInt($('.session-dur').html()))+'%');
+    if(dif < 20){
+        $('.countDown').css('color','red');
+        $('.time-bar-count').css('color','red');
+    }
+
+    if(dif < 1){
+        $.ajax({
+            type: 'POST',
+            url: './sql.php',
+            data: {
+                endBooking: dif
+            },
+            dataType: 'json',
+            success: function (response) {
+
+                console.log(response);
+            }});
+        reload();
+    }
+}
+setInterval(function () {
+      getCount();
+},8000);
+
+getCount();
